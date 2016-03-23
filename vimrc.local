@@ -1,0 +1,88 @@
+" [CHRIS][160316][CREATE]
+" [环境设置 已在before中设置]
+" 不要使用vi的键盘模式，而是vim自己的
+" set nocompatible
+" Assume a dark background
+" set background=dark
+
+" [属性设置]
+
+" [实用设置]
+" 去掉输入错误的提示声音
+set noeb
+" 在处理未保存或只读文件的时候，弹出确认
+set confirm
+" 禁止生成临时文件
+set nobackup
+set noswapfile
+" 搜索忽略大小写
+set ignorecase
+
+
+
+" 键盘映射
+
+
+" [插件管理]
+" [NERDTree]
+map <F3> :NERDTreeToggle<CR>
+imap <F3> <ESC> :NERDTreeToggle<CR>
+"当打开vim且没有文件时自动打开NERDTree
+autocmd vimenter * if !argc() | NERDTree | endif
+" 只剩 NERDTree时自动关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" 忽略 。vimrc里面也有
+"let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+
+" [CTags taglist_46]
+let Tlist_Sort_Type = "name"            " 按照名称排序  
+let Tlist_Auto_Open=0                   " 默认打开Taglist 
+let Tlist_Use_Right_Window = 1          " 在右侧显示窗口  
+let Tlist_Compart_Format = 1            " 压缩方式  
+let Tlist_Exist_OnlyWindow = 1          " 如果只有一个buffer，kill窗口也kill掉buffer  
+let Tlist_Exit_OnlyWindow = 1           " 如果taglist窗口是最后一个窗口，则退出vim 
+let Tlist_Show_One_File = 1             " 不同时显示多个文件的tag，只显示当前文件的
+"let Tlist_File_Fold_Auto_Close = 0     " 不要关闭其他文件的tags  
+"let Tlist_Enable_Fold_Column = 0       " 不要显示折叠树  
+" 设置tags  
+set tags=tags;  
+set autochdir 
+let Tlist_Ctags_Cmd = '/usr/bin/ctags' 
+:nmap <silent> <F4> <ESC>:Tlist<RETURN>
+
+" [new-omni-completion]
+filetype plugin indent on               " 打开文件侦测类型
+set completeopt=longest,menu
+
+
+" [WinManger]
+let g:winManagerWindowLayout='FileExplorer|TagList'
+nmap wm :WMToggle<cr>
+
+" [CSCOPE]
+" 设定是否使用 quickfix 窗口来显示 cscope 结果
+:set cscopequickfix=s-,c-,d-,i-,t-,e-
+" vim后第一件事是要把刚才生成的cscope文件导入到vim中来
+:cs add /home/do/Workstation/cscope.out /home/do/Workstation/
+nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>i :cs find i <C-R>=expand("<cfile>")<CR><CR>          "Replace up command
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+" [a.vim]
+nnoremap <silent> <F12> :A<CR>                                  ".h .c File switchover
+
+" [QuickFix]
+autocmd FileType c,cpp  map <buffer> <leader><space> :w<cr>:make<cr>
+nmap <leader>cn :cn<cr>
+nmap <leader>cp :cp<cr>
+nmap <leader>cw :cw 10<cr> 
+
+" [Grep.vim]
+" nnoremap <silent> <F5> :Grep<CR>
+" 使用手动输入Grep命令
